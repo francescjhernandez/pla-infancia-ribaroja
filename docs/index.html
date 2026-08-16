@@ -14,17 +14,19 @@
       line-height: 1.6;
     }
     h1 { color: #0056b3; }
-    .search-box { 
-      display: flex; 
-      gap: 10px; 
-      margin: 20px 0; 
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 20px 0;
     }
-    input[type="text"] { 
-      flex: 1; 
+    input[type="text"], input[type="email"] { 
       padding: 12px; 
       font-size: 16px; 
       border: 1px solid #ccc; 
       border-radius: 4px; 
+      width: 100%;
+      box-sizing: border-box;
     }
     button { 
       padding: 12px 24px; 
@@ -54,8 +56,9 @@
   <h1>Consulta amb IA: Pla d'Infància i Adolescència</h1>
   <p>Fes qualsevol consulta sobre aquest pla municipal de Riba-roja de Túria i l'assistent et respondrà basant-se en el document oficial.</p>
 
-  <div class="search-box">
-    <input type="text" id="pregunta" placeholder="Exemple: Quins són els objectius de participació infantil?" onkeypress="if(event.key==='Enter') executarConsulta()">
+  <div class="input-group">
+    <input type="email" id="emailUsuari" placeholder="El teu correu electrònic (opcional, per si la IA necessita consultar l'observador)">
+    <input type="text" id="pregunta" placeholder="Escriu la teua pregunta ací..." onkeypress="if(event.key==='Enter') executarConsulta()">
     <button id="btnConsultar" onclick="executarConsulta()">Consultar</button>
   </div>
 
@@ -64,15 +67,15 @@
 
   <script>
     const API_KEY = "AQ.Ab8RN6LyGENY8EnGyrc-UKpl9PTm0ladGIN6xTnsXXOqE19y5w"; 
+    const CORREU_OBSERVADOR = "fjhernan@uv.es"; 
     let dadesPla = [];
 
-    // Carregar el JSON local des de la mateixa carpeta docs
+    // Carregar dades des de data.json
     fetch('data.json')
       .then(res => res.json())
       .then(data => { dadesPla = data; })
       .catch(err => console.error("Error en carregar data.json:", err));
 
-    // Cerca de fragments rellevants (RAG local)
     function seleccionarContext(pregunta) {
       if (!dadesPla || dadesPla.length === 0) return "";
       
@@ -90,12 +93,14 @@
       return coincidencies.map(s => `[${s.capitol}]\n${s.text}`).join("\n\n");
     }
 
-    // Consulta a l'API de Gemini
     async function executarConsulta() {
-      const input = document.getElementById('pregunta');
+      const inputPregunta = document.getElementById('pregunta');
+      const inputEmail = document.getElementById('emailUsuari');
       const divResposta = document.getElementById('resposta');
       const btn = document.getElementById('btnConsultar');
-      const pregunta = input.value.trim();
+      
+      const pregunta = inputPregunta.value.trim();
+      const email = inputEmail.value.trim();
 
       if (!pregunta) return;
 
@@ -105,10 +110,12 @@
       try {
         const context = seleccionarContext(pregunta);
 
-        const promptSistema = `Eres un assistent virtual encarregat de resoldre dubtes sobre el Pla Municipal d'Infància i Adolescència de Riba-roja de Túria. 
-Respon a la pregunta de l'usuari basant-te ÚNICAMENT en la informació del context proporcionat. 
-Si la resposta no es troba en aquest context, indica-ho clarament sense inventar dades.
-INSTRUCCIÓ LINGÜÍSTICA: Utilitza un valencià correcte. Usa la forma "aquest" en lloc de "est" o "este", i "francés" en lloc de "francès".`;
+        const promptSistema = `Eres un assistent virtual encarregat de resoldre dubtes sobre el Pla Municipal d'Infància i Adolescència de Riba-roja de Túria.
+INSTRUCCIONS STRICTES:
+1. Respon a la pregunta de l'usuari basant-te ÚNICAMENT en la informació del context proporcionat.
+2. SI LA RESPOSTA NO ES TROBA EN EL CONTEXT O ÉS INCERTA, respon EXACTAMENT amb la paraula: "NO_HO_SÉ". No t'inventes informació.
+3. IDIOMA: Respon SEMPRE en la mateixa llengua en què se't faça la pregunta (si és en castellà, respon en castellà; si és en anglés, en anglés, etc.).
+4. Quan respongues en valencià/català, utilitza un valencià correcte (usa la forma "aquest" en lloc de "est" o "este", i "francés" en lloc de "francès").`;
 
         const bodyPeticio = {
           contents: [
@@ -130,7 +137,13 @@ INSTRUCCIÓ LINGÜÍSTICA: Utilitza un valencià correcte. Usa la forma "aquest"
         const data = await response.json();
 
         if (data.candidates && data.candidates[0].content && data.candidates[0].content.parts[0].text) {
-          divResposta.innerText = data.candidates[0].content.parts[0].text;
+          const textResposta = data.candidates[0].content.parts[0].text.trim();
+
+          if (textResposta.includes("NO_HO_SÉ")) {
+            gestionarDubteNoResolt(pregunta, email, divResposta);
+          } else {
+            divResposta.innerText = textResposta;
+          }
         } else if (data.error) {
           divResposta.innerText = "Error de l'API: " + data.error.message;
         } else {
@@ -142,6 +155,20 @@ INSTRUCCIÓ LINGÜÍSTICA: Utilitza un valencià correcte. Usa la forma "aquest"
         divResposta.innerText = "S'ha produït un error de connexió en realitzar la consulta.";
       } finally {
         btn.disabled = false;
+      }
+    }
+
+    function gestionarDubteNoResolt(pregunta, email, divResposta) {
+      if (email) {
+        // L'usuari ha facilitat el correu
+        divResposta.innerText = `Moltes gràcies. No he trobat aquesta informació específica en el document del pla, però hem registrat la teua pregunta i el teu correu (${email}). L'observador humà revisarà la consulta i en breu rebràs una resposta.`;
+        
+        // Enllaç automàtic cap al correu de l'observador
+        const mailtoLink = `mailto:${CORREU_OBSERVADOR}?subject=Consulta no resolta per IA - Pla Infància&body=Correu de l'usuari: ${email}%0D%0APregunta: ${encodeURIComponent(pregunta)}`;
+        window.location.href = mailtoLink;
+      } else {
+        // L'usuari no ha facilitat el correu
+        divResposta.innerText = "En aquests moments no dispose d'aquesta informació en el document. Per favor, facilita'ns el teu correu electrònic en el camp superior i en breu rebràs una resposta per part de l'observador humà.";
       }
     }
   </script>
