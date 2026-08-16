@@ -66,11 +66,10 @@
   <div id="resposta">Escriu una pregunta al camp superior i prem «Consultar».</div>
 
   <script>
-    const API_KEY = "AQ.Ab8RN6LyGENY8EnGyrc-UKpl9PTm0ladGIN6xTnsXXOqE19y5w"; 
+    const API_KEY = "AQ.Ab8RN6LDbNDJwbP6vzjuTf_GWHGprl77e702dCcjaJ2n46dp4w"; 
     const CORREU_OBSERVADOR = "fjhernan@uv.es"; 
     let dadesPla = [];
 
-    // Carregar dades des de data.json
     fetch('data.json')
       .then(res => res.json())
       .then(data => { dadesPla = data; })
@@ -160,14 +159,10 @@ INSTRUCCIONS STRICTES:
 
     function gestionarDubteNoResolt(pregunta, email, divResposta) {
       if (email) {
-        // L'usuari ha facilitat el correu
         divResposta.innerText = `Moltes gràcies. No he trobat aquesta informació específica en el document del pla, però hem registrat la teua pregunta i el teu correu (${email}). L'observador humà revisarà la consulta i en breu rebràs una resposta.`;
-        
-        // Enllaç automàtic cap al correu de l'observador
         const mailtoLink = `mailto:${CORREU_OBSERVADOR}?subject=Consulta no resolta per IA - Pla Infància&body=Correu de l'usuari: ${email}%0D%0APregunta: ${encodeURIComponent(pregunta)}`;
         window.location.href = mailtoLink;
       } else {
-        // L'usuari no ha facilitat el correu
         divResposta.innerText = "En aquests moments no dispose d'aquesta informació en el document. Per favor, facilita'ns el teu correu electrònic en el camp superior i en breu rebràs una resposta per part de l'observador humà.";
       }
     }
