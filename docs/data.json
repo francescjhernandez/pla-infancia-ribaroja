@@ -1,0 +1,37 @@
+[
+  {
+    "id": "cap-1",
+    "capitol": "1. Introducció i Marc Normatiu",
+    "ruta": "seccions/introduccio.html",
+    "text": "El Pla Municipal d'Infància i Adolescència de Riba-roja de Túria (2026-2029) estableix el marc d'actuació per a la protecció, promoció i desenvolupament dels drets dels xiquets, xiquetes i adolescents del municipi. Es fonamenta en la Convenció sobre els Drets de l'Infant de les Nacions Unides i en la normativa autonòmica i estatal en matèria de protecció a la infància.",
+    "keywords": ["introducció", "marc normatiu", "drets", "convenció", "normativa", "riba-roja"]
+  },
+  {
+    "id": "cap-2",
+    "capitol": "2. Diagnòstic de la Infància i la Joventut a Riba-roja",
+    "ruta": "seccions/diagnostic.html",
+    "text": "El diagnòstic analitza la situació demogràfica, educativa, social i d'oci de la infància i adolescència en Riba-roja de Túria. Identifica les principals necessitats de la població infantil, com la millora d'espais d'oci inclusius, l'atenció a la salut mental, la prevenció de la bretxa digital i el suport a les famílies en situació de vulnerabilitat.",
+    "keywords": ["diagnòstic", "demografia", "necessitats", "salut mental", "educació", "vulnerabilitat", "oci"]
+  },
+  {
+    "id": "cap-3",
+    "capitol": "3. Eixos Estratègics i Objectius",
+    "ruta": "seccions/eixos.html",
+    "text": "El pla s'articula en diversos eixos estratègics: Eix 1: Participació i Ciutadania Activa; Eix 2: Educació, Cultura i Oci Inclusiu; Eix 3: Benestar, Salut i Protecció Social; Eix 4: Entorn Urbà, Medi Ambient i Sostenibilitat. Cada eix defineix objectius operatius per a garantiment dels drets infantils.",
+    "keywords": ["eixos", "objectius", "estratègia", "participació", "educació", "benestar", "sostenibilitat"]
+  },
+  {
+    "id": "cap-4",
+    "capitol": "4. Programa d'Accions i Fitxes de Treball",
+    "ruta": "seccions/accions.html",
+    "text": "Detall de les accions concretes a desenvolupar entre 2026 i 2029. Inclou la creació i consolidació del Consell d'Infància, activitats d'oci alternatiu per a adolescents, programes de prevenció de l'assetjament escolar, millora de parcs i zones de joc accessibles, i campanyes de sensibilització en valors igualitaris.",
+    "keywords": ["accions", "consell d'infància", "activitats", "assetjament", "parcs", "igualtat", "programació"]
+  },
+  {
+    "id": "cap-5",
+    "capitol": "5. Seguiment, Avaluació i Pressupost",
+    "ruta": "seccions/avaluacio.html",
+    "text": "Mecanismes d'indicadors de seguiment i avaluació contínua del pla. Es preveu una revisió anual d'execució i una avaluació final en 2029. També inclou l'estimació pressupostària assignada per les diferents àrees municipals de l'Ajuntament de Riba-roja de Túria.",
+    "keywords": ["seguiment", "avaluació", "indicadors", "pressupost", "revisió", "ajuntament"]
+  }
+]
