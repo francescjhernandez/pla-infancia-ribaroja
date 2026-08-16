@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cercador IA - Pla d'Infància i Adolescència</title>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      max-width: 800px; 
+      margin: 30px auto; 
+      padding: 0 20px; 
+      color: #333;
+      line-height: 1.6;
+    }
+    h1 { color: #0056b3; }
+    .search-box { 
+      display: flex; 
+      gap: 10px; 
+      margin: 20px 0; 
+    }
+    input[type="text"] { 
+      flex: 1; 
+      padding: 12px; 
+      font-size: 16px; 
+      border: 1px solid #ccc; 
+      border-radius: 4px; 
+    }
+    button { 
+      padding: 12px 24px; 
+      font-size: 16px; 
+      cursor: pointer; 
+      background-color: #0056b3; 
+      color: white; 
+      border: none; 
+      border-radius: 4px; 
+    }
+    button:hover { background-color: #003d80; }
+    button:disabled { background-color: #aaa; cursor: not-allowed; }
+    #resposta { 
+      background: #f9f9f9; 
+      padding: 20px; 
+      border-left: 4px solid #0056b3; 
+      border-radius: 4px; 
+      min-height: 60px; 
+      white-space: pre-wrap; 
+      margin-top: 15px;
+    }
+    .status { font-style: italic; color: #666; }
+  </style>
+</head>
+<body>
+
+  <h1>Consulta amb IA: Pla d'Infància i Adolescència</h1>
+  <p>Fes qualsevol consulta sobre aquest pla municipal de Riba-roja de Túria i l'assistent et respondrà basant-se en el document oficial.</p>
+
+  <div class="search-box">
+    <input type="text" id="pregunta" placeholder="Exemple: Quins són els objectius de participació infantil?" onkeypress="if(event.key==='Enter') executarConsulta()">
+    <button id="btnConsultar" onclick="executarConsulta()">Consultar</button>
+  </div>
+
+  <h3>Resposta de l'Assistent:</h3>
+  <div id="resposta">Escriu una pregunta al camp superior i prem «Consultar».</div>
+
+  <script>
+    // Clau d'API configurada des de la teua captura de pantalla
+    const API_KEY = "AQ.Ab8RN6LyGENY8EnGyrc-UKpl9PTm0ladGIN6xTnsXXOqE19y5w"; 
+    let dadesPla = [];
+
+    // Carregar el JSON local des de la mateixa carpeta docs
+    fetch('data.json')
+      .then(res => res.json())
+      .then(data => { dadesPla = data; })
+      .catch(err => console.error("Error en carregar data.json:", err));
+
+    // Cerca de fragments rellevants (RAG local)
+    function seleccionarContext(pregunta) {
+      if (!dadesPla || dadesPla.length === 0) return "";
+      
+      const paraules = pregunta.toLowerCase().split(' ').filter(p => p.length > 3);
+      
+      let coincidencies = dadesPla.filter(item => {
+        const textComplet = (item.text + ' ' + (item.keywords ? item.keywords.join(' ') : '')).toLowerCase();
+        return paraules.some(p => textComplet.includes(p));
+      });
+
+      if (coincidencies.length === 0) {
+        coincidencies = dadesPla.slice(0, 3);
+      }
+
+      return coincidencies.map(s => `[${s.capitol}]\n${s.text}`).join("\n\n");
+    }
+
+    // Consulta a l'API de Gemini
+    async function executarConsulta() {
+      const input = document.getElementById('pregunta');
+      const divResposta = document.getElementById('resposta');
+      const btn = document.getElementById('btnConsultar');
+      const pregunta = input.value.trim();
+
+      if (!pregunta) return;
+
+      divResposta.innerHTML = "<span class='status'>Consultant el document i generant la resposta...</span>";
+      btn.disabled = true;
+
+      try {
+        const context = seleccionarContext(pregunta);
+
+        const promptSistema = `Eres un assistent virtual encarregat de resoldre dubtes sobre el Pla Municipal d'Infància i Adolescència de Riba-roja de Túria. 
+Respon a la pregunta de l'usuari basant-te ÚNICAMENT en la informació del context proporcionat. 
+Si la resposta no es troba en aquest context, indica-ho clarament sense inventar dades.
+INSTRUCCIÓ LINGÜÍSTICA: Utilitza un valencià correcte. Usa la forma "aquest" en lloc de "est" o "este", i "francés" en lloc de "francès".`;
+
+        const bodyPeticio = {
+          contents: [
+            {
+              role: "user",
+              parts: [
+                { text: `${promptSistema}\n\nContext del document:\n${context}\n\nPregunta: ${pregunta}` }
+              ]
+            }
+          ]
+        };
+
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${API_KEY}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(bodyPeticio)
+        });
+
+        const data = await response.json();
+
+        if (data.candidates && data.candidates[0].content && data.candidates[0].content.parts[0].text) {
+          divResposta.innerText = data.candidates[0].content.parts[0].text;
+        } else if (data.error) {
+          divResposta.innerText = "Error de l'API: " + data.error.message;
+        } else {
+          divResposta.innerText = "No s'ha pogut obtindre una resposta vàlida.";
+        }
+
+      } catch (error) {
+        console.error(error);
+        divResposta.innerText = "S'ha produït un error de connexió en realitzar la consulta.";
+      } finally {
+        btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>
