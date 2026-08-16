@@ -1,37 +1,51 @@
 [
   {
-    "id": "cap-1",
-    "capitol": "1. Introducció i Marc Normatiu",
+    "id": "intro-normativa",
+    "capitol": "1. Marc Normatiu, Institucional i Justificació del Pla",
     "ruta": "seccions/introduccio.html",
-    "text": "El Pla Municipal d'Infància i Adolescència de Riba-roja de Túria (2026-2029) estableix el marc d'actuació per a la protecció, promoció i desenvolupament dels drets dels xiquets, xiquetes i adolescents del municipi. Es fonamenta en la Convenció sobre els Drets de l'Infant de les Nacions Unides i en la normativa autonòmica i estatal en matèria de protecció a la infància.",
-    "keywords": ["introducció", "marc normatiu", "drets", "convenció", "normativa", "riba-roja"]
+    "text": "El Pla Municipal d'Infància i Adolescència de Riba-roja de Túria (2026-2029) és l'instrument estratègic transversal dissenyat per l'Ajuntament de Riba-roja de Túria per garantir el desplegament efectiu dels drets dels xiquets, xiquetes i adolescents en el municipi. El seu marc normatiu es fonamenta en la Convenció sobre els Drets de l'Infant de les Nacions Unides (1989), la Constitució Espanyola de 1978 (article 39), la Llei Orgànica 1/1996 de Protecció Jurídica del Menor, la Llei Orgànica 8/2021 de protecció integral a la infància i l'adolescència enfront de la violència (LOPIVI), així com la Llei 26/2018 de la Generalitat Valenciana de drets i garanties de la infància i la meua adolescència. Aquest pla justifica la necessitat d'articular la governança local des d'una perspectiva de drets, promovent la transversalitat entre totes les àrees municipals (Educació, Serveis Socials, Joventut, Esports, Urbanisme, Medi Ambient i Cultura).",
+    "keywords": ["introducció", "marc normatiu", "convenció drets infant", "lopivi", "llei 26/2018", "riba-roja", "governissa", "transversalitat"]
   },
   {
-    "id": "cap-2",
-    "capitol": "2. Diagnòstic de la Infància i la Joventut a Riba-roja",
+    "id": "diagnostic-demografia",
+    "capitol": "2. Diagnòstic Socioeducatiu i Demogràfic de la Infància i Adolescència",
     "ruta": "seccions/diagnostic.html",
-    "text": "El diagnòstic analitza la situació demogràfica, educativa, social i d'oci de la infància i adolescència en Riba-roja de Túria. Identifica les principals necessitats de la població infantil, com la millora d'espais d'oci inclusius, l'atenció a la salut mental, la prevenció de la bretxa digital i el suport a les famílies en situació de vulnerabilitat.",
-    "keywords": ["diagnòstic", "demografia", "necessitats", "salut mental", "educació", "vulnerabilitat", "oci"]
+    "text": "L'anàlisi de la realitat social i demogràfica de Riba-roja de Túria reflecteix l'evolució de la població infantil i adolescent en el municipi, detallant les seues característiques socioeducatives, la distribució per franges d'edat i la situació de les famílies. El diagnòstic identifica punts forts com la xarxa d'infraestructures educatives, esportives i d'oci, i posa el focus en necessitats clau: reforçar l'atenció a la salut mental i al benestar emocional en edats primerenques, previndre la bretxa digital i l'ús d'addiccions no comportamentals (pantalles i xarxes socials), augmentar les opcions d'oci alternatiu i inclusiu per a adolescents de 12 a 17 anys, coordinar actuacions per a la detecció precoç de la vulnerabilitat social i garantir l'accessibilitat universal en parcs, espais públics i activitats municipals.",
+    "keywords": ["diagnòstic", "demografia", "salut mental", "benestar emocional", "bretxa digital", "pantalles", "vulnerabilitat", "oci inclusiu", "accessibilitat"]
   },
   {
-    "id": "cap-3",
-    "capitol": "3. Eixos Estratègics i Objectius",
-    "ruta": "seccions/eixos.html",
-    "text": "El pla s'articula en diversos eixos estratègics: Eix 1: Participació i Ciutadania Activa; Eix 2: Educació, Cultura i Oci Inclusiu; Eix 3: Benestar, Salut i Protecció Social; Eix 4: Entorn Urbà, Medi Ambient i Sostenibilitat. Cada eix defineix objectius operatius per a garantiment dels drets infantils.",
-    "keywords": ["eixos", "objectius", "estratègia", "participació", "educació", "benestar", "sostenibilitat"]
+    "id": "eix-1-participacio",
+    "capitol": "3. Eix Estratègic 1: Participació i Ciutadania Activa",
+    "ruta": "seccions/eix1.html",
+    "text": "L'Eix 1 té com a objectiu principal consolidar la infància i l'adolescència com a ciutadans de ple dret amb capacitat d'influir en la presa de decisions públiques de Riba-roja de Túria. Les línies d'actuació i accions concretes inclouen: 1) Enfortir el Consell Municipal d'Infància i Adolescència (CLIA), garantint la representativitat de tots els centres educatius i col·lectius de la localitat, amb reunions periòdiques i trobades amb la corporació municipal. 2) Implementar el Pressupost Participatiu Infantil i Adolescent, assignant una partida pressupostària específica perquè els xiquets i xiquetes decidisquen projectes per al poble. 3) Celebració anual del Ple Municipal de la Infància coincidint amb el 20 de novembre (Dia Mundial de la Infància). 4) Fomentar la participació en la Xarxa de Ciutats Amigues de la Infància d'UNICEF i la creació de canals digitals directes d'opinió i propostes per als joves.",
+    "keywords": ["participació", "clia", "consell infància", "pressupost participatiu", "ple infància", "unicef", "ciutats amigues", "drets"]
   },
   {
-    "id": "cap-4",
-    "capitol": "4. Programa d'Accions i Fitxes de Treball",
-    "ruta": "seccions/accions.html",
-    "text": "Detall de les accions concretes a desenvolupar entre 2026 i 2029. Inclou la creació i consolidació del Consell d'Infància, activitats d'oci alternatiu per a adolescents, programes de prevenció de l'assetjament escolar, millora de parcs i zones de joc accessibles, i campanyes de sensibilització en valors igualitaris.",
-    "keywords": ["accions", "consell d'infància", "activitats", "assetjament", "parcs", "igualtat", "programació"]
+    "id": "eix-2-educacio-cultura",
+    "capitol": "2. Eix Estratègic 2: Educació, Cultura i Oci Inclusiu",
+    "ruta": "seccions/eix2.html",
+    "text": "L'Eix 2 es centra en la promoció d'una educació integral, l'accés equitatiu a la cultura i el desenvolupament d'una oferta d'oci saludable i inclusiva. Les seues accions principals contemplen: 1) Programes de suport socioeducatiu i reforç escolar en col·laboració amb els centres educatius per a reduir l'absentisme i l'abandonament escolar precoç. 2) Activitats de prevenció de l'assetjament escolar (bullying i cyberbullying) i de promoció de la convivència positiva. 3) Dinamització de l'Espai Jove i creació de programes d'oci alternatiu de cap de setmana adaptats als interessos dels adolescents. 4) Garantir la inclusió de xiquets, xiquetes i adolescents amb diversitat funcional o necessitats específiques de suport en totes les activitats culturals, esportives, escoles d'estiu i de temps lliure del municipi.",
+    "keywords": ["educació", "cultura", "oci inclusiu", "reforç escolar", "assetjament escolar", "bullying", "espai jove", "diversitat funcional", "escoles d'estiu"]
   },
   {
-    "id": "cap-5",
-    "capitol": "5. Seguiment, Avaluació i Pressupost",
-    "ruta": "seccions/avaluacio.html",
-    "text": "Mecanismes d'indicadors de seguiment i avaluació contínua del pla. Es preveu una revisió anual d'execució i una avaluació final en 2029. També inclou l'estimació pressupostària assignada per les diferents àrees municipals de l'Ajuntament de Riba-roja de Túria.",
-    "keywords": ["seguiment", "avaluació", "indicadors", "pressupost", "revisió", "ajuntament"]
+    "id": "eix-3-salut-proteccio",
+    "capitol": "5. Eix Estratègic 3: Benestar, Salut Integral i Protecció Social",
+    "ruta": "seccions/eix3.html",
+    "text": "L'Eix 3 aborda la protecció social, la seguretat i la promoció de la salut física i emocional en la infància i l'adolescència. Inclou les actuacions següents: 1) Foment de la salut mental infantil mitjançant tallers de gestió emocional, autoestima i prevenció del suïcidi i autolesions en adolescents. 2) Tallers d'educació en salut afectivo-sexual, prevenció de consum de substàncies i ús responsable de pantalles, videojocs i xarxes socials. 3) Desplegament de protocols locals en marc de la LOPIVI per a la detecció i intervenció precoç davant situacions de maltractament, abús, negligència o violència intrafamiliar. 4) Programes de suport a les famílies (Escola de Famílies, intervenció psicosocial) per a millorar les competències parentals i donar acompanyament en situacions de vulnerabilitat econòmica o social.",
+    "keywords": ["salut mental", "gestió emocional", "protecció social", "lopivi", "violència", "abús", "addiccions", "pantalles", "escola de famílies", "parentalitat positiva"]
+  },
+  {
+    "id": "eix-4-entorn-sostenibilitat",
+    "capitol": "6. Eix Estratègic 4: Entorn Urbà, Sostenibilitat i Espais Inclusius",
+    "ruta": "seccions/eix4.html",
+    "text": "L'Eix 4 aborda la transformació de l'espai públic de Riba-roja de Túria des de la visió de la infància, promovent un municipi segur, accessible i sostenible. Les línies de treball inclouen: 1) Disseny i adaptació de parcs infantils inclusius i accessibles amb jocs adaptats per a diferents capacitats i zones de l'ombra. 2) Implementació de Camins Escolars Segurs per a fomentar la mobilitat autònoma i peatonal dels escolars cap als col·legis. 3) Promoció d'activitats de sensibilització mediambiental i conservació del Parc Natural del Túria, involucrant a xiquets i joves en accions de reforestació i reciclatge. 4) Pacificació del trànsit en l'entorn dels centres educatius i zones de joc infantil per a garantir un entorn urbà protector i saludable.",
+    "keywords": ["entorn urbà", "parcs inclusius", "camins escolars segurs", "sostenibilitat", "parc natural del túria", "accessibilitat", "mobilitat autònoma", "medi ambient"]
+  },
+  {
+    "id": "eix-5-seguiment-pressupost",
+    "capitol": "7. Eix Estratègic 5: Governança, Seguiment, Avaluació i Pressupost",
+    "ruta": "seccions/eix5.html",
+    "text": "L'Eix 5 garanteix la viabilitat tècnica, econòmica i organitzativa per a la realització de totes les accions del pla entre 2026 i 2029. Inclou: 1) Creació de la Comissió Tècnica Interdepartamental de la Infància, integrada pels responsables de les diferents àrees de l'Ajuntament. 2) Sistema d'indicadors de seguiment (d'execució, d'impacte i de resultat) amb memòries d'avaluació anual i una avaluació final en 2029. 3) RDT d'avaluació compartida amb el Consell d'Infància i Adolescència (CLIA) per a rendir comptes als mateixos xiquets i xiquetes. 4) Compromís pressupostari anual assignat a les diferents regidories implicades per a la correcta execució de les fitxes d'acció del pla.",
+    "keywords": ["governança", "seguiment", "avaluació", "indicadors", "pressupost", "comissió tècnica", "rendició de comptes", "clia"]
   }
 ]
