@@ -1,197 +1,154 @@
 <!DOCTYPE html>
 <html lang="ca">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cercador IA - Pla d'Infància i Adolescència</title>
-  <style>
-    body { 
-      font-family: Arial, sans-serif; 
-      max-width: 800px; 
-      margin: 30px auto; 
-      padding: 0 20px; 
-      color: #333;
-      line-height: 1.6;
-    }
-    h1 { color: #0056b3; }
-    .input-group {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      margin: 20px 0;
-    }
-    input[type="text"], input[type="email"] { 
-      padding: 12px; 
-      font-size: 16px; 
-      border: 1px solid #ccc; 
-      border-radius: 4px; 
-      width: 100%;
-      box-sizing: border-box;
-    }
-    button { 
-      padding: 12px 24px; 
-      font-size: 16px; 
-      cursor: pointer; 
-      background-color: #0056b3; 
-      color: white; 
-      border: none; 
-      border-radius: 4px; 
-    }
-    button:hover { background-color: #003d80; }
-    button:disabled { background-color: #aaa; cursor: not-allowed; }
-    #resposta { 
-      background: #f9f9f9; 
-      padding: 20px; 
-      border-left: 4px solid #0056b3; 
-      border-radius: 4px; 
-      min-height: 60px; 
-      white-space: pre-wrap; 
-      margin-top: 15px;
-    }
-    .status { font-style: italic; color: #666; }
-    .error { color: #c00; font-weight: bold; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta amb IA: Pla d'Infància i Adolescència</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            color: #333;
+        }
+        h1 {
+            color: #0056b3;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="email"], textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+        button {
+            background-color: #0056b3;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #004085;
+        }
+        button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        #resposta {
+            margin-top: 30px;
+            padding: 15px;
+            border-left: 4px solid #0056b3;
+            background-color: #f8f9fa;
+            white-space: pre-wrap;
+            display: none;
+        }
+        .error {
+            border-left-color: #dc3545 !important;
+            color: #721c24;
+            background-color: #f8d7da !important;
+        }
+    </style>
 </head>
 <body>
 
-  <h1>Consulta amb IA: Pla d'Infància i Adolescència</h1>
-  <p>Fes qualsevol consulta sobre aquest pla municipal de Riba-roja de Túria i l'assistent et respondrà basant-se en el document oficial.</p>
+    <h1>Consulta amb IA: Pla d'Infància i Adolescència</h1>
+    <p>Fes qualsevol consulta sobre aquest pla municipal de Riba-roja de Túria i l'assistent et respondrà basant-se en el document oficial.</p>
 
-  <div class="input-group">
-    <input type="email" id="emailUsuari" placeholder="El teu correu electrònic (opcional, per si la IA necessita consultar l'observador)">
-    <input type="text" id="pregunta" placeholder="Escriu la teua pregunta ací..." onkeypress="if(event.key==='Enter') executarConsulta()">
+    <div class="form-group">
+        <input type="email" id="email" placeholder="El teu correu electrònic (opcional, per si la IA necessita consultar l'observador)">
+    </div>
+
+    <div class="form-group">
+        <input type="text" id="pregunta" placeholder="Ex: Quantes parts té el pla?" required>
+    </div>
+
     <button id="btnConsultar" onclick="executarConsulta()">Consultar</button>
-  </div>
 
-  <h3>Resposta de l'Assistent:</h3>
-  <div id="resposta">Escriu una pregunta al camp superior i prem «Consultar».</div>
+    <div id="contenidorResposta" style="margin-top: 30px; display: none;">
+        <h3>Resposta de l'Assistent:</h3>
+        <div id="resposta"></div>
+    </div>
 
-  <script>
-    const WORKER_URL = "https://gemini-proxy-riba-roja.francesc-j-hernandez.workers.dev";
-    const CORREU_OBSERVADOR = "francesc.j.hernandez@uv.es"; 
-    let dadesPla = [];
+    <script>
+        const WORKER_URL = 'https://gemini-proxy-riba-roja.francesc-j-hernandez.workers.dev/';
 
-    fetch('data.json')
-      .then(res => {
-        if (!res.ok) throw new Error("No s'ha trobat data.json");
-        return res.json();
-      })
-      .then(data => { 
-        dadesPla = data; 
-        console.log("data.json carregat:", dadesPla.length, "registres");
-      })
-      .catch(err => {
-        console.error("Error en carregar data.json:", err);
-        document.getElementById('resposta').innerHTML = 
-          "<span class='error'>⚠️ Error: No s'ha pogut carregar data.json. Assegura't que el fitxer està en la mateixa carpeta que aquest HTML.</span>";
-      });
+        async function executarConsulta() {
+            const preguntaInput = document.getElementById('pregunta');
+            const emailInput = document.getElementById('email');
+            const btn = document.getElementById('btnConsultar');
+            const respostaDiv = document.getElementById('resposta');
+            const contenidorResposta = document.getElementById('contenidorResposta');
 
-    function seleccionarContext(pregunta) {
-      if (!dadesPla || dadesPla.length === 0) return "";
-      
-      const paraules = pregunta.toLowerCase()
-        .replace(/[¿?.,;:!]/g, '')
-        .split(' ')
-        .filter(p => p.length > 3);
-      
-      if (paraules.length === 0) return "";
+            const pregunta = preguntaInput.value.trim();
+            const email = emailInput.value.trim();
 
-      let coincidencies = dadesPla.filter(item => {
-        const textComplet = (
-          (item.text || '') + ' ' + 
-          (item.capitol || '') + ' ' +
-          (item.keywords ? item.keywords.join(' ') : '')
-        ).toLowerCase();
-        return paraules.some(p => textComplet.includes(p));
-      });
-
-      if (coincidencies.length === 0) {
-        coincidencies = dadesPla.slice(0, 3);
-      }
-
-      return coincidencies.map(s => `[${s.capitol}]\n${s.text}`).join("\n\n");
-    }
-
-    async function executarConsulta() {
-      const inputPregunta = document.getElementById('pregunta');
-      const inputEmail = document.getElementById('emailUsuari');
-      const divResposta = document.getElementById('resposta');
-      const btn = document.getElementById('btnConsultar');
-      
-      const pregunta = inputPregunta.value.trim();
-      const email = inputEmail.value.trim();
-
-      if (!pregunta) {
-        divResposta.innerText = "Per favor, escriu una pregunta.";
-        return;
-      }
-
-      divResposta.innerHTML = "<span class='status'>Consultant el document i generant la resposta...</span>";
-      btn.disabled = true;
-
-      try {
-        const context = seleccionarContext(pregunta);
-
-        const promptSistema = `Eres un assistent virtual encarregat de resoldre dubtes sobre el Pla Municipal d'Infància i Adolescència de Riba-roja de Túria.
-INSTRUCCIONS STRICTES:
-1. Respon a la pregunta de l'usuari basant-te ÚNICAMENT en la informació del context proporcionat.
-2. SI LA RESPOSTA NO ES TROBA EN EL CONTEXT O ÉS INCERTA, respon EXACTAMENT amb la paraula: "NO_HO_SÉ". No t'inventes informació.
-3. IDIOMA: Respon SEMPRE en la mateixa llengua en què se't faça la pregunta (si és en castellà, respon en castellà; si és en anglés, en anglés, etc.).
-4. Quan respongues en valencià/català, utilitza un valencià correcte (usa la forma "aquest" en lloc de "est" o "este", i "francés" en lloc de "francès").`;
-
-        const bodyPeticio = {
-          contents: [
-            {
-              role: "user",
-              parts: [
-                { text: `${promptSistema}\n\nContext del document:\n${context}\n\nPregunta: ${pregunta}` }
-              ]
+            if (!pregunta) {
+                alert('Per favor, escriu una pregunta.');
+                return;
             }
-          ]
-        };
 
-        const response = await fetch(WORKER_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(bodyPeticio)
-        });
+            // Preparar interfície per a la càrrega
+            btn.disabled = true;
+            btn.innerText = 'Consultant...';
+            contenidorResposta.style.display = 'block';
+            respostaDiv.className = '';
+            respostaDiv.style.display = 'block';
+            respostaDiv.innerText = 'Processant la teua consulta...';
 
-        const data = await response.json();
+            const bodyPeticio = {
+                contents: [{
+                    parts: [{
+                        text: `Context: Ets un assistent virtual especialitzat en el Pla d'Infància i Adolescència de Riba-roja de Túria. Respon a la següent pregunta de l'usuari (${email ? 'Correu: ' + email : 'Anònim'}):\n\n${pregunta}`
+                    }]
+                }]
+            };
 
-        if (data.error) {
-          divResposta.innerHTML = `<span class='error'>Error de l'API (${data.error.code || '???'}): ${data.error.message}</span>`;
-          return;
+            try {
+                const response = await fetch(WORKER_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(bodyPeticio)
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error?.message || `Error de l'API (${response.status})`);
+                }
+
+                if (data.candidates && data.candidates[0]?.content?.parts[0]?.text) {
+                    respostaDiv.innerText = data.candidates[0].content.parts[0].text;
+                } else if (data.error) {
+                    throw new Error(data.error.message);
+                } else {
+                    respostaDiv.innerText = 'No s'ha pogut obtindre una resposta vàlida de l'assistent.';
+                }
+
+            } catch (err) {
+                respostaDiv.className = 'error';
+                respostaDiv.innerText = `S'ha produït un error de connexió o de processament: ${err.message}`;
+            } finally {
+                btn.disabled = false;
+                btn.innerText = 'Consultar';
+            }
         }
+    </script>
 
-        if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
-          const textResposta = data.candidates[0].content.parts[0].text.trim();
-
-          if (textResposta.includes("NO_HO_SÉ")) {
-            gestionarDubteNoResolt(pregunta, email, divResposta);
-          } else {
-            divResposta.innerText = textResposta;
-          }
-        } else {
-          divResposta.innerText = "No s'ha pogut obtindre una resposta vàlida.";
-        }
-
-      } catch (error) {
-        console.error(error);
-        divResposta.innerText = "S'ha produït un error de connexió en realitzar la consulta.";
-      } finally {
-        btn.disabled = false;
-      }
-    }
-
-    function gestionarDubteNoResolt(pregunta, email, divResposta) {
-      if (email) {
-        divResposta.innerText = `Moltes gràcies. No he trobat aquesta informació específica en el document del pla, però hem registrat la teua pregunta i el teu correu (${email}). L'observador humà revisarà la consulta i en breu rebràs una resposta.`;
-        const mailtoLink = `mailto:${CORREU_OBSERVADOR}?subject=Consulta no resolta per IA - Pla Infància&body=Correu de l'usuari: ${email}%0D%0APregunta: ${encodeURIComponent(pregunta)}`;
-        window.location.href = mailtoLink;
-      } else {
-        divResposta.innerText = "En aquests moments no dispose d'aquesta informació en el document. Per favor, facilita'ns el teu correu electrònic en el camp superior i en breu rebràs una resposta per part de l'observador humà.";
-      }
-    }
-  </script>
 </body>
 </html>
