@@ -1,11 +1,13 @@
 export default {
   async fetch(request, env) {
+    // Capçaleres CORS permissives per a evitar el 'Failed to fetch'
     const corsHeaders = {
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "POST, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type",
+      "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+      "Access-Control-Allow-Headers": "*",
     };
 
+    // Resposta ràpida per a les peticions prèvies de verificació CORS (OPTIONS)
     if (request.method === "OPTIONS") {
       return new Response(null, {
         status: 204,
@@ -13,6 +15,7 @@ export default {
       });
     }
 
+    // Filtrar mètodes no permesos
     if (request.method !== "POST") {
       return new Response(
         JSON.stringify({ error: { message: "Només s'accepten peticions POST" } }), 
@@ -47,8 +50,8 @@ export default {
         );
       }
 
-      // Endpoint estable v1 amb gemini-1.5-flash
-      const geminiUrl = `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${env.GEMINI_API_KEY}`;
+      // Endpoint estable de Gemini
+      const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${env.GEMINI_API_KEY}`;
 
       const response = await fetch(geminiUrl, {
         method: "POST",
