@@ -84,7 +84,7 @@
     </div>
 
     <script>
-        const WORKER_URL = 'https://gemini-proxy-riba-roja.francesc-j-hernandez.workers.dev/';
+        const WORKER_URL = 'https://gemini-proxy-riba-roja.francesc-j-hernandez.workers.dev';
 
         async function executarConsulta() {
             const preguntaInput = document.getElementById('pregunta');
@@ -101,7 +101,6 @@
                 return;
             }
 
-            // Preparar interfície per a la càrrega
             btn.disabled = true;
             btn.innerText = 'Consultant...';
             contenidorResposta.style.display = 'block';
